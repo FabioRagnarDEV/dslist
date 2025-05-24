@@ -4,10 +4,13 @@ import com.devsuperior.dslist.dto.GameDTO;
 import com.devsuperior.dslist.dto.GameMinDTO;
 import com.devsuperior.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -30,4 +33,15 @@ private GameService gameService;
     return result;
 
     }
+
+    @Configuration
+    public class WebConfig implements WebMvcConfigurer {
+        @Override
+        public void addCorsMappings(CorsRegistry registry) {
+            registry.addMapping("/**")
+                    .allowedOrigins("http://localhost:3000")
+                    .allowedMethods("*");
+        }
+    }
+
 }
