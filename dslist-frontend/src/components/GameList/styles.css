@@ -1,0 +1,52 @@
+.game-list-container {
+  background-color: #f8f9fa;
+  padding: 20px;
+}
+
+.game-card {
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 15px;
+  margin-bottom: 15px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.game-card:hover {
+  transform: scale(1.02);
+}
+
+.game-card img {
+  width: 100px;
+  height: 140px;
+  border-radius: 8px;
+  object-fit: cover;
+  margin-right: 20px;
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.game-info h2 {
+  margin: 0;
+  color: #e63946;
+}
+
+.game-info p {
+  margin: 5px 0;
+  color: #555;
+}
+
+.link-detail {
+  text-decoration: none;
+  color: #1d3557;
+  font-weight: bold;
+}
+
+.link-detail:hover {
+  text-decoration: underline;
+}

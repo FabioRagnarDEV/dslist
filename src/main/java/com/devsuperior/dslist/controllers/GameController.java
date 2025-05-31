@@ -4,44 +4,43 @@ import com.devsuperior.dslist.dto.GameDTO;
 import com.devsuperior.dslist.dto.GameMinDTO;
 import com.devsuperior.dslist.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping(value = "/games")
+@CrossOrigin(origins = "http://localhost:3000")
 public class GameController {
 
-@Autowired
-private GameService gameService;
+    @Autowired
+    private GameService gameService;
+
+    @GetMapping
+    public List<GameMinDTO> findAll() {
+        return gameService.findAll();
+    }
 
     @GetMapping(value = "/{id}")
-    public GameDTO findById(@PathVariable Long id){
-        GameDTO result = gameService.findByid(id);
-        return result;
-
-    }
-@GetMapping
-    public List<GameMinDTO> findAll(){
-    List<GameMinDTO> result = gameService.findAll();
-    return result;
-
+    public GameDTO findById(@PathVariable Long id) {
+        return gameService.findByid(id);
     }
 
-    @Configuration
-    public class WebConfig implements WebMvcConfigurer {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**")
-                    .allowedOrigins("http://localhost:3000")
-                    .allowedMethods("*");
-        }
+    // 🔥 Endpoint para criar um jogo
+    @PostMapping
+    public GameDTO create(@RequestBody GameDTO dto) {
+        return gameService.create(dto);
     }
 
+    // 🔥 Endpoint para atualizar um jogo
+    @PutMapping(value = "/{id}")
+    public GameDTO update(@PathVariable Long id, @RequestBody GameDTO dto) {
+        return gameService.update(id, dto);
+    }
+
+    // 🔥 Endpoint para deletar um jogo
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable Long id) {
+        gameService.delete(id);
+    }
 }

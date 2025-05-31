@@ -18,23 +18,53 @@ public class GameService {
     private GameRepository gameRepository;
 
     @Transactional
-    public GameDTO findByid(Long id){
-        Game result = gameRepository.findById(id).get();
+    public GameDTO findByid(Long id) {
+        Game result = gameRepository.findById(id).orElseThrow();
         return new GameDTO(result);
     }
+
     @Transactional
     public List<GameMinDTO> findAll() {
         List<Game> result = gameRepository.findAll();
-        return result.stream().map(x -> new GameMinDTO(x)).toList();
-
+        return result.stream().map(GameMinDTO::new).toList();
     }
 
     @Transactional
     public List<GameMinDTO> findByList(Long listId) {
         List<GameMinProjection> result = gameRepository.searchByList(listId);
-        return result.stream().map(x -> new GameMinDTO(x)).toList();
-
+        return result.stream().map(GameMinDTO::new).toList();
     }
 
+    @Transactional
+    public GameDTO create(GameDTO dto) {
+        Game entity = new Game();
+        copyDtoToEntity(dto, entity);
+        entity = gameRepository.save(entity);
+        return new GameDTO(entity);
+    }
 
+    @Transactional
+    public GameDTO update(Long id, GameDTO dto) {
+        Game entity = gameRepository.findById(id).orElseThrow();
+        copyDtoToEntity(dto, entity);
+        entity = gameRepository.save(entity);
+        return new GameDTO(entity);
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        gameRepository.deleteById(id);
+    }
+
+    // Método auxiliar para copiar os dados
+    private void copyDtoToEntity(GameDTO dto, Game entity) {
+        entity.setTitle(dto.getTitle());
+        entity.setYear(dto.getYear());
+        entity.setGenre(dto.getGenre());
+        entity.setPlatforms(dto.getPlatforms());
+        entity.setScore(dto.getScore());
+        entity.setImgUrl(dto.getImgUrl());
+        entity.setShortDescription(dto.getShortDescription());
+        entity.setLongDescription(dto.getLongDescription());
+    }
 }
